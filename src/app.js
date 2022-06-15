@@ -1,6 +1,10 @@
 const path = require("path");
+require("dotenv").config({ path: "../.env" });
 const express = require("express");
 const hbs = require("hbs");
+
+const geocode = require("./utils/geocode");
+const forecast = require("./utils/forecast");
 
 //set up express app;
 const app = express();
@@ -56,8 +60,54 @@ app.get("/help", (req, res) => {
 
 //weather page;
 app.get("/weather", (req, res) => {
-  res.send({ forecast: "Cloudy", location: "Skopje" });
+  if (!req.query.address) {
+    return res.send({
+      error: "Please provide a location!",
+    });
+  }
+  geocode(req.query.address, (error, { latitude, longitude, label } = {}) => {
+    if (error) {
+      return res.send({ error });
+    }
+    forecast(latitude, longitude, (error, forecastData = {}) => {
+      if (error) {
+        return res.send({ error });
+      }
+      res.send({
+        forecast: forecastData,
+        label,
+        address: req.query.address,
+      });
+    });
+  });
+  // geocode(req.query.address, (error, { latitude, longitude, label } = {}) => {
+  //   if (error) {
+  //     return res.send({ error });
+  //   }
+  //   forecast(latitude, longitude, (error, forecastData) => {
+  //     if (error) {
+  //       return res.send({ error });
+  //     }
+  //     res.send({
+  //       forecast: forecastData,
+  //       label,
+  //       address: req.query.address,
+  //     });
+  //   });
+  // });
 });
+//
+// app.get("/products", (req, res) => {
+//   if (!req.query.search) {
+//     return res.send({
+//       error: "Please provide a search term.",
+//     });
+//   }
+//   console.log(req.query.search);
+//   res.send({
+//     products: [],
+//   });
+// });
 
 //catch 404 for /help
 app.get("/help/*", (req, res) => {
