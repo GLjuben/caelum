@@ -33,7 +33,7 @@ app.get("", (req, res) => {
   //1 arg-the name of the view to render;
   //2 arg- obj which containss all of the values we want that view to have access
   res.render("index", {
-    title: "Home",
+    title: "Weather",
     name: "Gorjan Ljuben",
     footer: "contact at 000000000",
   });
@@ -80,34 +80,7 @@ app.get("/weather", (req, res) => {
       });
     });
   });
-  // geocode(req.query.address, (error, { latitude, longitude, label } = {}) => {
-  //   if (error) {
-  //     return res.send({ error });
-  //   }
-  //   forecast(latitude, longitude, (error, forecastData) => {
-  //     if (error) {
-  //       return res.send({ error });
-  //     }
-  //     res.send({
-  //       forecast: forecastData,
-  //       label,
-  //       address: req.query.address,
-  //     });
-  //   });
-  // });
 });
-//
-// app.get("/products", (req, res) => {
-//   if (!req.query.search) {
-//     return res.send({
-//       error: "Please provide a search term.",
-//     });
-//   }
-//   console.log(req.query.search);
-//   res.send({
-//     products: [],
-//   });
-// });
 
 //catch 404 for /help
 app.get("/help/*", (req, res) => {

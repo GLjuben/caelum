@@ -8,13 +8,11 @@ const geocode = (address, callback) => {
     address
   )}&limit=1`;
   request({ url: positionstackUrl, json: true }, (error, { body }) => {
-    // console.log(body);
     if (error) {
       callback("Unable to connect to location services.", undefined);
     } else if (body.error) {
       callback("Unable to find position. Try another search.", undefined);
     } else {
-      // console.log(body.data);
       let geoinfo = body.data[0];
       console.log(geoinfo);
       callback(undefined, {

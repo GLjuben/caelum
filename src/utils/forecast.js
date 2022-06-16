@@ -5,9 +5,8 @@ const forecast_key = process.env.WEATHERSTACK_API_KEY;
 const forecast = (lat, long, callback) => {
   const weatherStackUrl = `http://api.weatherstack.com/current?access_key=${forecast_key}&query=${encodeURIComponent(
     lat
-  )},${encodeURIComponent(long)}&units=f`;
+  )},${encodeURIComponent(long)}&units=m`;
   request({ url: weatherStackUrl, json: true }, (error, { body }) => {
-    console.log("location body from weatherstack:", body);
     if (error) {
       callback("Unable to connect to location services.", undefined);
     } else if (body.error || !body.current) {
